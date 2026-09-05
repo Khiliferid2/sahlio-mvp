@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sahlio — لقى الحرفي المضمون</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="logo">Sahlio</div>
+  <nav>
+    <a href="index.html">الحريف</a>
+    <a href="provider.html">أنا حرفي</a>
+  </nav>
+</header>
+
+<div class="wrap">
+  <div id="auth-view">
+    <h1>مرحباً بيك فـ Sahlio</h1>
+    <p class="lead">حل كومبت أو دخل باش تبعث طلب خدمة.</p>
+    <div class="tabs">
+      <div class="tab active" data-tab="login">تسجيل الدخول</div>
+      <div class="tab" data-tab="register">كومبت جديد</div>
+    </div>
+
+    <div class="card" id="login-form">
+      <div class="field"><label>رقم الهاتف</label><input id="li-phone" placeholder="9XXXXXXX"></div>
+      <div class="field"><label>كلمة السر</label><input id="li-pass" type="password"></div>
+      <button onclick="doLogin()">دخول</button>
+      <div class="error" id="li-error"></div>
+    </div>
+
+    <div class="card hidden" id="register-form">
+      <div class="field"><label>الاسم الكامل</label><input id="re-name"></div>
+      <div class="field"><label>رقم الهاتف</label><input id="re-phone" placeholder="9XXXXXXX"></div>
+      <div class="field"><label>كلمة السر</label><input id="re-pass" type="password"></div>
+      <button onclick="doRegister()">حل كومبت</button>
+      <div class="error" id="re-error"></div>
+    </div>
+  </div>
+
+  <div id="main-view" class="hidden">
+    <h1>أهلاً <span id="who"></span> 👋</h1>
+    <p class="lead">اطلب خدمة جديدة أو تابع طلباتك.</p>
+    <button class="ghost" onclick="API.logout()" style="float:left;">خروج</button>
+
+    <h2>اطلب خدمة</h2>
+    <div class="card">
+      <div class="field">
+        <label>الخدمة</label>
+        <select id="req-service"></select>
+      </div>
+      <div class="field">
+        <label>اشرح طلبك</label>
+        <textarea id="req-desc" placeholder="مثال: نحب كهربائي يصلح climatiseur، الجهاز ما يبردش."></textarea>
+      </div>
+      <div class="field">
+        <label>البلاصة</label>
+        <select id="req-zone">
+          <option>تونس</option><option>أريانة</option><option>بن عروس</option><option>منوبة</option>
+        </select>
+      </div>
+      <button onclick="submitRequest()">ابعث الطلب</button>
+      <div class="error" id="req-error"></div>
+    </div>
+
+    <h2>طلباتي</h2>
+    <div class="card" id="my-requests"><p class="small">ما فماش طلبات باهي.</p></div>
+
+    <div id="offers-section" class="hidden">
+      <h2>العروض</h2>
+      <div class="card" id="offers-list"></div>
+    </div>
+  </div>
+</div>
+
+<script src="api.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
