@@ -8,15 +8,33 @@ db.pragma('foreign_keys = ON');
 const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
 db.exec(schema);
 
-// seed services once
-const count = db.prepare('SELECT COUNT(*) AS c FROM services').get().c;
-if (count === 0) {
-  const insert = db.prepare('INSERT INTO services (name_ar, name_fr, icon) VALUES (?,?,?)');
-  insert.run('كهرباء', 'Électricien', 'bolt');
-  insert.run('تنظيف', 'Ménage', 'broom');
-  insert.run('سباكة', 'Plombier', 'wrench');
-  insert.run('صباغة', 'Peinture', 'paint');
-  console.log('Seeded default services');
+const SERVICES = [
+  ['كهرباء', 'Électricien', 'bolt'],
+  ['تنظيف', 'Ménage', 'broom'],
+  ['سباكة', 'Plombier', 'wrench'],
+  ['صباغة', 'Peinture', 'paint'],
+  ['جردنة', 'Jardinage', 'leaf'],
+  ['نقلان', 'Déménagement', 'truck'],
+  ['تكييف', 'Climatisation', 'snowflake'],
+  ['تصفيف شعر بالدار', 'Coiffure à domicile', 'scissors'],
+  ['دروس خصوصية', 'Cours particuliers', 'book'],
+  ['ريبراسيون تليفون', 'Réparation téléphone', 'phone'],
+  ['إعلامية', 'Informatique', 'computer'],
+  ['ميكانيك سيارات', 'Mécanique auto', 'car'],
+  ['نجارة', 'Menuiserie', 'hammer'],
+  ['حدادة', 'Ferronnerie', 'tool'],
+  ['حراسة وأمن', 'Sécurité / Gardiennage', 'shield'],
+];
+
+const existing = new Set(db.prepare('SELECT name_ar FROM services').all().map(r => r.name_ar));
+const insert = db.prepare('INSERT INTO services (name_ar, name_fr, icon) VALUES (?,?,?)');
+let added = 0;
+for (const [ar, fr, icon] of SERVICES) {
+  if (!existing.has(ar)) {
+    insert.run(ar, fr, icon);
+    added++;
+  }
 }
+if (added > 0) console.log(`Seeded ${added} service(s)`);
 
 module.exports = db;
