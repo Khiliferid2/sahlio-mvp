@@ -46,11 +46,12 @@ async function loadProfile() {
 }
 
 async function saveLocation() {
-  const zone = document.getElementById('p-zone').value;
+  const gov = document.getElementById('p-gov').value;
+  const deleg = document.getElementById('p-deleg').value;
   const radius = Number(document.getElementById('p-radius').value) || 10;
-  const [lat, lng] = ZONES[zone];
+  const [lat, lng] = ZONES[gov];
   try {
-    await API.call('PUT', '/api/providers/me', { base_lat: lat, base_lng: lng, travel_radius_km: radius });
+    await API.call('PUT', '/api/providers/me', { base_lat: lat, base_lng: lng, travel_radius_km: radius, bio: deleg });
     document.getElementById('loc-error').textContent = '✓ تحفظت';
     loadNearby();
   } catch (e) { document.getElementById('loc-error').textContent = e.message; }
@@ -97,6 +98,7 @@ function boot() {
   document.getElementById('auth-view').classList.add('hidden');
   document.getElementById('main-view').classList.remove('hidden');
   document.getElementById('who').textContent = user.full_name;
+  wireZonePickers(document.getElementById('p-gov'), document.getElementById('p-deleg'));
   loadServices().then(loadProfile).then(loadNearby);
 }
 
