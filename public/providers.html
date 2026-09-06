@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sahlio — الحرفيين اللي يخدموا تو</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .motiv-banner{
+    background:var(--primary); color:#fff; border-radius:14px 14px 14px 3px;
+    padding:20px; margin-bottom:24px; text-align:center;
+  }
+  .motiv-banner .lat{font-size:1.3rem; display:block; margin-bottom:6px;}
+  .prov-card{display:flex; justify-content:space-between; align-items:center; gap:10px; border-bottom:1px solid var(--line); padding:14px 0;}
+  .prov-card:last-child{border-bottom:none;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Sahlio</div>
+  <nav>
+    <a href="index.html">الحريف</a>
+    <a href="provider.html">أنا حرفي</a>
+    <a href="providers.html">الحرفيين</a>
+  </nav>
+</header>
+
+<div class="wrap">
+  <div class="motiv-banner">
+    <span class="lat">💪 كل حرفي هوني بنى الثقة بخدمة بعد خدمة</span>
+    كي تخدم وتقيّم مليح، اسمك يبان هوني ويشوفوك آلاف الحرفاء
+  </div>
+
+  <h1>شكون يخدم تو فـ Sahlio</h1>
+  <p class="lead">هاذوما الحرفيين النشيطين، مرتبين حسب التقييم.</p>
+
+  <div class="card" id="providers-list">
+    <p class="small">قاعدين نجيبو القائمة...</p>
+  </div>
+</div>
+
+<script src="api.js"></script>
+<script>
+async function loadPublicProviders() {
+  const box = document.getElementById('providers-list');
+  try {
+    const rows = await API.call('GET', '/api/providers/public');
+    if (rows.length === 0) {
+      box.innerHTML = '<p class="small">ما فماش حرفيين نشيطين تو — كون أول واحد!</p>';
+      return;
+    }
+    box.innerHTML = rows.map(p => `
+      <div class="prov-card">
+        <div>
+          <strong>${p.full_name}</strong>
+          <div class="small">${p.services || 'ما حددش خدمات باهي'} · ${p.bio || ''}</div>
+        </div>
+        <div class="stars">${p.rating_avg ? p.rating_avg + ' ★' : '—'} <span class="small">(${p.rating_count})</span></div>
+      </div>
+    `).join('');
+  } catch (e) {
+    box.innerHTML = '<p class="small error">صار مشكل فتحميل القائمة.</p>';
+  }
+}
+loadPublicProviders();
+</script>
+</body>
+</html>
