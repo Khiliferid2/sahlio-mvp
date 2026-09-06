@@ -11,6 +11,7 @@
   <nav>
     <a href="index.html">أنا حريف</a>
     <a href="provider.html">أنا حرفي</a>
+    <a href="providers.html">الحرفيين</a>
   </nav>
 </header>
 
@@ -41,13 +42,20 @@
     <h1>أهلاً <span id="who"></span> 🛠️</h1>
     <button class="ghost" onclick="API.logout()" style="float:left;">خروج</button>
 
+    <div class="card" style="background:var(--primary); color:#fff; border-radius:14px 14px 14px 3px; text-align:center;">
+      <span class="lat" style="font-size:1.2rem; display:block; margin-bottom:6px;">💪 كل طلب تخدمو مليح يبني سمعتك</span>
+      كمل خدم، جمع تقييمات، واسمك يبان فـ <a href="providers.html" style="color:var(--gold); font-weight:700;">قائمة الحرفيين</a> اللي يشوفها آلاف الحرفاء
+    </div>
+
     <h2>1. حدد زون الخدمة متاعك</h2>
     <div class="card">
       <div class="field">
-        <label>البلاصة الأساسية</label>
-        <select id="p-zone">
-          <option>تونس</option><option>أريانة</option><option>بن عروس</option><option>منوبة</option>
-        </select>
+        <label>الولاية</label>
+        <select id="p-gov"></select>
+      </div>
+      <div class="field">
+        <label>المعتمدية</label>
+        <select id="p-deleg"></select>
       </div>
       <div class="field">
         <label>نطاق التنقل (كم)</label>
