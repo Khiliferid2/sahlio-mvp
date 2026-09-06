@@ -35,11 +35,15 @@ async function loadServices() {
 async function submitRequest() {
   const service_id = document.getElementById('req-service').value;
   const description = document.getElementById('req-desc').value.trim();
-  const zone = document.getElementById('req-zone').value;
-  const [lat, lng] = ZONES[zone];
+  const gov = document.getElementById('req-gov').value;
+  const deleg = document.getElementById('req-deleg').value;
+  const [lat, lng] = ZONES[gov];
   if (!description) return document.getElementById('req-error').textContent = 'اكتب وصف الطلب';
   try {
-    await API.call('POST', '/api/requests', { service_id, description, lat, lng, address_label: zone });
+    await API.call('POST', '/api/requests', {
+      service_id, description, lat, lng,
+      address_label: `${deleg} — ${gov}`
+    });
     document.getElementById('req-desc').value = '';
     document.getElementById('req-error').textContent = '';
     loadMyRequests();
@@ -101,6 +105,7 @@ function boot() {
   document.getElementById('auth-view').classList.add('hidden');
   document.getElementById('main-view').classList.remove('hidden');
   document.getElementById('who').textContent = user.full_name;
+  wireZonePickers(document.getElementById('req-gov'), document.getElementById('req-deleg'));
   loadServices();
   loadMyRequests();
 }
