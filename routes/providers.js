@@ -46,4 +46,20 @@ router.post('/providers/me/services', requireAuth, (req, res) => {
   res.json({ ok: true });
 });
 
+// GET /api/providers/public — public directory of active providers (no auth needed)
+router.get('/providers/public', (req, res) => {
+  const rows = db.prepare(
+    `SELECT u.full_name, p.rating_avg, p.rating_count, p.bio,
+       GROUP_CONCAT(s.name_ar, '، ') as services
+     FROM providers p
+     JOIN users u ON u.id = p.user_id
+     LEFT JOIN provider_services ps ON ps.provider_id = p.id
+     LEFT JOIN services s ON s.id = ps.service_id
+     WHERE p.base_lat IS NOT NULL
+     GROUP BY p.id
+     ORDER BY p.rating_avg DESC, p.rating_count DESC`
+  ).all();
+  res.json(rows);
+});
+
 module.exports = router;
